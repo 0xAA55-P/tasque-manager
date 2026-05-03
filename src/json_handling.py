@@ -2,7 +2,7 @@ import json
 from rich import print
 from utils import get_id
 
-def overwrite_activities(data: list, filename: str):
+def overwrite_activities(data: list, filename: str) -> None:
     with open(filename, "w") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
