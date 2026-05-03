@@ -1,5 +1,6 @@
 # Tasque-manager
  - Criei este projeto para praticar consumo de APIs e Handling de JSON.
+ - Um task manager simples que recebe tarefas "aleatórias" da api Bored API e salva-as em um JSON.
 
 ## APIs
 
