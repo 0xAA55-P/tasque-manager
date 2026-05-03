@@ -3,7 +3,7 @@ import requests
 
 URL = "https://bored-api.appbrewery.com/random"
 
-def show_menu():
+def show_menu() -> None:
     menu = [
         "Exit",
         "Generate Activity",
@@ -33,5 +33,5 @@ def get_activity() -> dict:
 def get_id() -> int:
     return int(input("\n[INPUT] ID: "))
 
-def get_new_status():
+def get_new_status() -> str:
     return input("\n[INPUT] New status (TODO, IN_PROGRESS, DONE): ").strip().upper()
