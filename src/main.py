@@ -18,8 +18,11 @@ def handle_choice(choice: int) -> bool:
 
     match choice:
         case 1:
-            save_activity(get_activity(), FILENAME)
-            print("\n[green][SUCCESS][/] Activity saved successfully.")
+            try:
+                save_activity(get_activity(), FILENAME)
+                print("\n[green][SUCCESS][/] Activity saved successfully.")
+            except requests.exceptions.HTTPError:
+                print("\n[yellow][WARNING][/] Request limit reached")
 
         case 2:
             show_activities(FILENAME, _detailed=False)

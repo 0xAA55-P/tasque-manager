@@ -20,15 +20,20 @@ def read_choice() -> int:
     return int(input("\n[INPUT] Type Option: "))
 
 def get_activity() -> dict:
-    response = requests.get(URL)
-    response.raise_for_status()
+    try:
+        response = requests.get(URL)
+        response.raise_for_status()
 
-    if not response.content:
-        raise ValueError("[red][ERROR][/] Empty response from server.")
+        if not response.content:
+            raise ValueError("[red][ERROR][/] Empty response from server.")
 
-    result = response.json()
+        result = response.json()
 
-    return result
+        return result
+
+    except requests.exceptions.HTTPError as e:
+        raise
+        return {}
 
 def get_id() -> int:
     return int(input("\n[INPUT] ID: "))
