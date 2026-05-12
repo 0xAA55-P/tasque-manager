@@ -4,11 +4,29 @@ from utils import get_id
 
 
 def overwrite_activities(data: list, filename: str) -> None:
+    """Sobreescreve as atividades.
+       Evita duplicação de dados e má formatação de JSON.
+
+    Args:
+        data: A lista com os dados atuais
+        filename: O Nome do arquivo JSON
+    """
+
     with open(filename, "w") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
 def save_activity(activity: dict, filename: str) -> None:
+    """Salva a atividade
+
+    Args:
+        activity: A atividade a salvar
+        filename: Nome do arquivo
+
+    Returns:
+        None se a atividade estiver vazia
+    """
+
     if activity is None:
         return None
 
@@ -26,6 +44,18 @@ def save_activity(activity: dict, filename: str) -> None:
 
 
 def delete_activity(id_to_delete: int, filename: str) -> bool:
+    """Deleta a atividade pelo seu ID
+
+    Args:
+        id_to_delete: o id da atividade a ser deletada
+        filename: Nome do arquivo
+
+    Returns:
+        False se o id for menor que 0
+        True se conseguir deletae
+
+    """
+
     if id_to_delete < 0:
         return False
 
@@ -43,6 +73,14 @@ def delete_activity(id_to_delete: int, filename: str) -> bool:
 
 
 def change_status(id_to_change: int, new_status: str, filename: str) -> None:
+    """Troca o status de uma tarefa
+
+    Args:
+        id_to_change: o id da tarefa a alterar
+        new_status: o novo status da tarefa
+        filename: o nome do arquivo
+    """
+
     with open(filename, "r") as file:
         data = json.load(file)
 
@@ -58,7 +96,7 @@ def show_activities(filename: str, *, _detailed: bool = True) -> None:
     """
     exibe todas as atividades
 
-    ergs:
+    Args:
         filename: nome do arquivo JSON a ler
 
     dev Args:

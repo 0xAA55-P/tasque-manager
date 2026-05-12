@@ -43,11 +43,7 @@ def handle_choice(choice: int) -> bool:
     match choice:
         case 1:
             activity = save_activity(get_activity(), FILENAME) 
-
-            if activity is not None:
-                bprint("\n[green][SUCCESS][/] Activity saved successfully.")
-            else:
-                pass
+            bprint("\n[green][SUCCESS][/] Activity saved successfully.")
 
         case 2:
             show_activities(FILENAME, _detailed=False)

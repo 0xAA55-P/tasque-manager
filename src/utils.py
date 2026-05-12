@@ -32,7 +32,7 @@ def get_activity() -> dict | None:
         Falha: None
 
     Raises:
-    
+        ValueError caso a resposta esteja vazia
 
     """
 
