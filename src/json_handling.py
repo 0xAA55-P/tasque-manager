@@ -1,7 +1,7 @@
-import json
-from rich import print
-from utils import get_id
+"""Gerencia as Operações com os arquivos JSON"""
 
+from rich import print as bprint
+import json
 
 def overwrite_activities(data: list, filename: str) -> None:
     """Sobreescreve as atividades.
@@ -12,7 +12,7 @@ def overwrite_activities(data: list, filename: str) -> None:
         filename: O Nome do arquivo JSON
     """
 
-    with open(filename, "w") as file:
+    with open(filename, "w", encoding="utf-8") as file:
         json.dump(data, file, indent=4, ensure_ascii=False)
 
 
@@ -31,7 +31,7 @@ def save_activity(activity: dict, filename: str) -> None:
         return None
 
     try:
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             data = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         data = []  # lista vazia se não existir
@@ -51,8 +51,11 @@ def delete_activity(id_to_delete: int, filename: str) -> bool:
         filename: Nome do arquivo
 
     Returns:
-        False se o id for menor que 0
-        True se conseguir deletae
+        False se o id for menor que 0 ou ocorrer algum erro
+        True se conseguir deletar
+
+    Raises:
+        IndexError se o id estiver fora do alcance
 
     """
 
@@ -60,14 +63,19 @@ def delete_activity(id_to_delete: int, filename: str) -> bool:
         return False
 
     try:
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             data = json.load(file)
 
     except (FileNotFoundError, json.JSONDecodeError):
         return False
 
-    data.pop(id_to_delete)
-    overwrite_activities(data, filename)
+    try:
+        data.pop(id_to_delete)
+        overwrite_activities(data, filename)
+
+    # ao tentar deletar uma tarefa de id que não existe...
+    except IndexError:
+        return False
 
     return True
 
@@ -81,7 +89,7 @@ def change_status(id_to_change: int, new_status: str, filename: str) -> None:
         filename: o nome do arquivo
     """
 
-    with open(filename, "r") as file:
+    with open(filename, "r", encoding="utf-8") as file:
         data = json.load(file)
 
     for item in data:
@@ -101,28 +109,30 @@ def show_activities(filename: str, *, _detailed: bool = True) -> None:
 
     dev Args:
         _detailed:
-          se True, mostra informações detalhadas
+          se True, mostra informações detalhadas (padrão)
           se False, mostra informações resumidas
     """
 
     try:
-        with open(filename, "r") as file:
+        with open(filename, "r", encoding="utf-8") as file:
             data = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         data = []
 
     for item in data:
-        print()
-        print(f"[green]Activity[/]: [yellow]{item.get('activity')}[/]")
-        print(f"[green]ID[/]: {item.get('id')}")
+        bprint()
+        bprint(f"[green]Activity[/]: [yellow]{item.get('activity')}[/]")
+        bprint(f"[green]ID[/]: {item.get('id')}")
 
         if _detailed:
-            print(f"[green]Type[/]: [yellow]{item.get('type')}[/]")
-            print(f"[green]Participants[/]: [yellow]{item.get('participants')}[/]")
+            bprint(f"[green]Type[/]: [yellow]{item.get('type')}[/]")
+            bprint(
+                f"[green]Participants[/]: [yellow]{item.get('participants')}[/]"
+            )
 
-        if item.get("link") != "":
-            print(f"[green]Link[/]: [yellow]{item.get('link')}[/]")
+        if item.get("link"):
+            bprint(f"[green]Link[/]: [yellow]{item.get('link')}[/]")
 
-        print(f"[green]Status[/]: [yellow]{item.get('status')}[/]")
+        bprint(f"[green]Status[/]: [yellow]{item.get('status')}[/]")
 
     return True

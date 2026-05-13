@@ -11,8 +11,6 @@ from rich import print as bprint
 from utils import get_id, get_new_status, read_choice, show_menu, get_activity
 from json_handling import save_activity, show_activities, change_status, delete_activity
 
-import requests
-
 AVAILABLE_CHOICES = {0, 1, 2, 3, 4}
 VALID_STATUS = {"TODO", "IN_PROGRESS", "DONE"}
 FILENAME = "../json/activities.json"
@@ -42,7 +40,7 @@ def handle_choice(choice: int) -> bool:
 
     match choice:
         case 1:
-            activity = save_activity(get_activity(), FILENAME) 
+            save_activity(get_activity(), FILENAME)
             bprint("\n[green][SUCCESS][/] Activity saved successfully.")
 
         case 2:
@@ -51,7 +49,7 @@ def handle_choice(choice: int) -> bool:
             print()
             id_to_delete = get_id()
 
-            if delete_activity(id_to_delete - 1, FILENAME):
+            if delete_activity(id_to_delete, FILENAME):
                 bprint("\n[green][SUCCESS][/] Activity deleted.")
             else:
                 bprint("\n[red][ERROR][/] Couldn't delete activity.")
